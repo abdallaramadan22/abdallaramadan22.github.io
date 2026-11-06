@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
@@ -50,7 +51,6 @@
     <button class="tab" onclick="showTab('knockout',this)">🏆 خروج المغلوب</button>
   </div>
 
-  <!-- الدوري -->
   <div id="league" class="card show">
     <h2>📊 ترتيب المجموعة</h2>
     <table><thead><tr><th>#</th><th>اللاعب</th><th>لعب</th><th>فوز</th><th>خسارة</th><th>نقط</th></tr></thead><tbody id="standings"></tbody></table>
@@ -60,14 +60,12 @@
     <button class="btn2" onclick="resetAll()">مسح كل النتايج</button>
   </div>
 
-  <!-- الهدافين -->
   <div id="scorers" class="card">
     <h2>⚽ أفضل هداف - اكتب جول كل لاعب</h2>
     <p style="color:#94a3b8;font-size:13px">الجول هنا يدوي، عشان تقدر تحسب مين هداف الدوري.</p>
     <div id="scorerList"></div>
   </div>
 
-  <!-- خروج المغلوب -->
   <div id="knockout" class="card">
     <h2>🏆 خروج المغلوب - أول 4 بيصعدوا</h2>
     <p style="color:#94a3b8;font-size:13px">نصف النهائي: الأول × الرابع - التاني × التالت. الفايز يروح النهائي.</p>
@@ -78,7 +76,6 @@
 
 <script>
 const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","عمر يسري","مصطفي","ماهر"];
-// صورتين: كريستيانو و ميسي - تقدر تغيرهم من الزرار اللي جنب الاسم
 const IMGS = {
   cr: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2023.jpg",
   messi: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
@@ -102,7 +99,7 @@ const matches = [
 ];
 let results = JSON.parse(localStorage.getItem('results')||'{}');
 let goals = JSON.parse(localStorage.getItem('goals')||'{}');
-let ko = JSON.parse(localStorage.getItem('ko')||'{}'); // {s1a,s1b,s2a,s2b,fa,fb}
+let ko = JSON.parse(localStorage.getItem('ko')||'{}');
 
 function showTab(id,btn){
   document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
@@ -153,15 +150,13 @@ function renderScorers(){
 }
 function renderKO(){
   let top = getSorted().slice(0,4);
-  // لو لسه مفيش نتايج، هنعرض اسماء افتراضية
   let s1a = top[0]?.name || 'الأول';
   let s1b = top[3]?.name || 'الرابع';
   let s2a = top[1]?.name || 'التاني';
   let s2b = top[2]?.name || 'التالت';
-  // الفايز من نصف النهائي
   let w1 = '', w2='';
-  if(ko.s1a!==undefined && ko.s1b!==undefined){ w1 = ko.s1a>ko.s1b ? s1a : ko.s1b>ko.s1a ? s1b : 'تعادل'; }
-  if(ko.s2a!==undefined && ko.s2b!==undefined){ w2 = ko.s2a>ko.s2b ? s2a : ko.s2b>ko.s2a ? s2b : 'تعادل'; }
+  if(ko.s1a!==undefined && ko.s1b!==undefined && ko.s1a!=='' && ko.s1b!==''){ w1 = ko.s1a>ko.s1b ? s1a : ko.s1b>ko.s1a ? s1b : 'تعادل'; }
+  if(ko.s2a!==undefined && ko.s2b!==undefined && ko.s2a!=='' && ko.s2b!==''){ w2 = ko.s2a>ko.s2b ? s2a : ko.s2b>ko.s2a ? s2b : 'تعادل'; }
   let html = `
   <div class="ko-box"><b>نصف نهائي 1</b><br><br>
     <div class="team"><img src="${imgOf(s1a)}">${s1a} <input type="number" id="s1a" value="${ko.s1a??''}" oninput="saveKO()"> VS <input type="number" id="s1b" value="${ko.s1b??''}" oninput="saveKO()"> <img src="${imgOf(s1b)}">${s1b}</div>
