@@ -68,13 +68,13 @@
   </div>
 </div>
 <script>
-const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","عمر يسري","مصطفي","ماهر"];
+const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","يوسف.صبري","مصطفي","ماهر"];
 const IMGS = {
   cr: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2023.jpg",
   messi: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
 };
 const CUSTOM = { "محمد رمضان": "ramadan.jpg", "محمد فتحي": "fathy.jpg", "كريم": "kareem.jpg", "عمر": "omar.jpg", "مصطفي": "mostafa.jpg", "ماهر": "maher.jpg" };
-const FIXED = { "عمر احمد تاج": "messi", "عمر يسري": "cr" };
+const FIXED = { "عمر احمد تاج": "messi", "يوسف.صبري": "cr" };
 let avatars = JSON.parse(localStorage.getItem('avatars')||'{}');
 players.forEach((p,i)=>{ if(!avatars[p]) avatars[p] = i%2===0 ? 'cr' : 'messi'; });
 const matches = [
@@ -84,12 +84,12 @@ const matches = [
   {day:1, a:"محمد فتحي", b:"عمر احمد تاج"},
   {day:1, a:"عمر احمد تاج", b:"مصطفي"},
   {day:1, a:"كريم", b:"عمر"},
-  {day:2, a:"كريم", b:"عمر يسري"},
+  {day:2, a:"كريم", b:"يوسف.صبري"},
   {day:2, a:"عمر", b:"محمد رمضان"},
-  {day:2, a:"عمر يسري", b:"محمد فتحي"},
+  {day:2, a:"يوسف.صبري", b:"محمد فتحي"},
   {day:2, a:"كريم", b:"ماهر"},
   {day:2, a:"عمر", b:"مصطفي"},
-  {day:2, a:"عمر يسري", b:"عمر احمد تاج"},
+  {day:2, a:"يوسف.صبري", b:"عمر احمد تاج"},
 ];
 // النتايج المسجلة
 let DEFAULT_RESULTS = { "0": {a:"3", b:"0"} };
@@ -259,13 +259,13 @@ renderFixtures(); renderStandings(); renderScorers();
   </div>
 </div>
 <script>
-const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","عمر يسري","مصطفي","ماهر"];
+const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","يوسف.صبري","مصطفي","ماهر"];
 const IMGS = {
   cr: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2023.jpg",
   messi: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
 };
 const CUSTOM = { "محمد رمضان": "ramadan.jpg", "محمد فتحي": "fathy.jpg", "كريم": "kareem.jpg", "عمر": "omar.jpg", "مصطفي": "mostafa.jpg", "ماهر": "maher.jpg" };
-const FIXED = { "عمر احمد تاج": "messi", "عمر يسري": "cr" };
+const FIXED = { "عمر احمد تاج": "messi", "يوسف.صبري": "cr" };
 let avatars = JSON.parse(localStorage.getItem('avatars')||'{}');
 players.forEach((p,i)=>{ if(!avatars[p]) avatars[p] = i%2===0 ? 'cr' : 'messi'; });
 const matches = [
@@ -275,12 +275,12 @@ const matches = [
   {day:1, a:"محمد فتحي", b:"عمر احمد تاج"},
   {day:1, a:"عمر احمد تاج", b:"مصطفي"},
   {day:1, a:"كريم", b:"عمر"},
-  {day:2, a:"كريم", b:"عمر يسري"},
+  {day:2, a:"كريم", b:"يوسف.صبري"},
   {day:2, a:"عمر", b:"محمد رمضان"},
-  {day:2, a:"عمر يسري", b:"محمد فتحي"},
+  {day:2, a:"يوسف.صبري", b:"محمد فتحي"},
   {day:2, a:"كريم", b:"ماهر"},
   {day:2, a:"عمر", b:"مصطفي"},
-  {day:2, a:"عمر يسري", b:"عمر احمد تاج"},
+  {day:2, a:"يوسف.صبري", b:"عمر احمد تاج"},
 ];
 let DEFAULT_RESULTS = { "0": {a:"3", b:"0"} };
 let savedResults = JSON.parse(localStorage.getItem('results')||'{}');
@@ -448,13 +448,13 @@ renderFixtures(); renderStandings(); renderScorers();
   </div>
 </div>
 <script>
-const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","عمر يسري","مصطفي","ماهر"];
+const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","يوسف.صبري","مصطفي","ماهر"];
 const IMGS = {
   cr: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2023.jpg",
   messi: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
 };
 const CUSTOM = { "محمد رمضان": "ramadan.jpg", "محمد فتحي": "fathy.jpg", "كريم": "kareem.jpg", "عمر": "omar.jpg", "مصطفي": "mostafa.jpg", "ماهر": "maher.jpg" };
-const FIXED = { "عمر احمد تاج": "messi", "عمر يسري": "cr" };
+const FIXED = { "عمر احمد تاج": "messi", "يوسف.صبري": "cr" };
 let avatars = JSON.parse(localStorage.getItem('avatars')||'{}');
 players.forEach((p,i)=>{ if(!avatars[p]) avatars[p] = i%2===0 ? 'cr' : 'messi'; });
 const matches = [
@@ -464,12 +464,12 @@ const matches = [
   {day:1, a:"محمد فتحي", b:"عمر احمد تاج"},
   {day:1, a:"عمر احمد تاج", b:"مصطفي"},
   {day:1, a:"كريم", b:"عمر"},
-  {day:2, a:"كريم", b:"عمر يسري"},
+  {day:2, a:"كريم", b:"يوسف.صبري"},
   {day:2, a:"عمر", b:"محمد رمضان"},
-  {day:2, a:"عمر يسري", b:"محمد فتحي"},
+  {day:2, a:"يوسف.صبري", b:"محمد فتحي"},
   {day:2, a:"كريم", b:"ماهر"},
   {day:2, a:"عمر", b:"مصطفي"},
-  {day:2, a:"عمر يسري", b:"عمر احمد تاج"},
+  {day:2, a:"يوسف.صبري", b:"عمر احمد تاج"},
 ];
 let DEFAULT_RESULTS = { "0": {a:"3", b:"0"} };
 let savedResults = JSON.parse(localStorage.getItem('results')||'{}');
