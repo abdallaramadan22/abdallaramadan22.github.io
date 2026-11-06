@@ -1,50 +1,199 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>توزيع المجموعات - عشوائي</title>
+<title>دوري الأبطال - كريستيانو VS ميسي</title>
 <style>
-* { margin:0; padding:0; box-sizing:border-box; font-family:sans-serif; }
-body { background:#0f0f0f; color:#fff; text-align:center; padding:20px; }
-h1 { font-size:28px; margin-bottom:5px; }
-p { color:#aaa; margin-bottom:20px; }
-button { background:#25D366; color:#fff; border:none; padding:15px 30px; border-radius:50px; font-size:20px; font-weight:bold; cursor:pointer; margin-bottom:20px; }
-.groups { display:flex; gap:15px; flex-wrap:wrap; justify-content:center; }
-.group { background:#1c1c1c; border-radius:15px; padding:20px; width:100%; max-width:320px; text-align:right; }
-.group h2 { text-align:center; margin-bottom:15px; color:#25D366; }
-.group div { background:#2a2a2a; padding:12px; border-radius:10px; margin-bottom:8px; font-size:18px; }
-.prizes { margin-top:30px; background:#1c1c1c; border-radius:15px; padding:20px; max-width:660px; margin-left:auto; margin-right:auto; }
-.prizes h2 { color:#FFD700; margin-bottom:15px; font-size:24px; }
-.prizes-grid { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
-.prize-card { background:#2a2a2a; border-radius:12px; padding:10px; width:48%; max-width:300px; }
-.prize-card img { width:100%; height:180px; object-fit:cover; border-radius:10px; }
-.prize-card b { display:block; margin-top:8px; font-size:17px; }
-.prize-card span { color:#FFD700; font-size:15px; }
+  *{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+  body{margin:0;background:#0f172a;color:#fff;padding:14px}
+  .container{max-width:920px;margin:auto}
+  h1{text-align:center;font-size:26px;margin:8px 0 2px}
+  p.sub{text-align:center;color:#94a3b8;margin:0 0 16px;font-size:14px}
+  .tabs{display:flex;gap:8px;margin-bottom:14px}
+  .tab{flex:1;padding:12px;border-radius:12px;border:1px solid #334155;background:#1e293b;color:#fff;cursor:pointer;font-weight:bold}
+  .tab.active{background:#facc15;color:#000}
+  .card{background:#1e293b;border-radius:16px;padding:16px;margin-bottom:16px;border:1px solid #334155;display:none}
+  .card.show{display:block}
+  h2{margin:0 0 12px;font-size:19px}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th,td{padding:10px;text-align:center;border-bottom:1px solid #334155}
+  th{color:#facc15}
+  .player-cell{display:flex;align-items:center;gap:8px;text-align:right;justify-content:start}
+  .avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid #facc15;flex-shrink:0;background:#fff}
+  .avatar-btn{font-size:11px;background:#334155;color:#fff;border:none;border-radius:20px;padding:3px 8px;cursor:pointer}
+  .match{background:#0f172a;border:1px solid #334155;border-radius:12px;padding:12px;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+  .team{flex:1;text-align:center;font-weight:bold;font-size:14px;display:flex;align-items:center;justify-content:center;gap:6px}
+  .team img{width:32px;height:32px;border-radius:50%;object-fit:cover}
+  .scores{display:flex;align-items:center;gap:6px}
+  input{width:52px;height:38px;text-align:center;font-size:18px;font-weight:bold;border-radius:8px;border:1px solid #475569;background:#1e293b;color:#fff}
+  input.small{width:60px}
+  .btn{background:#facc15;color:#000;border:none;padding:11px;border-radius:10px;font-weight:bold;cursor:pointer;width:100%;font-size:16px;margin-top:10px}
+  .btn2{background:transparent;color:#f87171;border:1px solid #f87171;padding:8px;border-radius:10px;cursor:pointer;width:100%;margin-top:8px}
+  .badge{background:#22c55e;color:#000;padding:2px 8px;border-radius:20px;font-size:11px}
+  .gold{background:#facc15;color:#000;padding:2px 8px;border-radius:20px;font-size:11px;font-weight:bold}
+  .day-title{background:#facc15;color:#000;padding:6px 12px;border-radius:20px;display:inline-block;font-weight:bold;margin:14px 0 10px}
+  .ko-box{background:#0f172a;border:2px dashed #facc15;border-radius:14px;padding:14px;margin-bottom:12px;text-align:center}
+  .champion{font-size:22px;text-align:center;background:linear-gradient(90deg,#facc15,#f97316);color:#000;padding:16px;border-radius:14px;font-weight:bold;margin-top:12px;display:none}
+  .scorer-row{display:flex;align-items:center;gap:10px;background:#0f172a;padding:10px;border-radius:12px;margin-bottom:8px}
+  .scorer-row img{width:40px;height:40px;border-radius:50%;object-fit:cover}
 </style>
 </head>
 <body>
-<h1>⚽ توزيع المجموعات</h1>
-<p>اضغط على الزرار وهيوزع اللاعيبة عشوائي كل مرة</p>
-<button onclick="distribute()">🔀 وزع عشوائي</button>
-<div class="groups">
-  <div class="group"><h2>المجموعة A</h2><div id="groupA"></div></div>
-  <div class="group"><h2>المجموعة B</h2><div id="groupB"></div></div>
-</div>
-<div class="prizes">
-  <h2>🏆 الجوائز</h2>
-  <div class="prizes-grid">
-    <div class="prize-card"><img src="prize1.jpg"><b>🥇 المركز الأول</b><span>اكتب اسم الجائزة هنا</span></div>
-    <div class="prize-card"><img src="prize2.jpg"><b>🥈 المركز الثاني</b><span>اكتب اسم الجائزة هنا</span></div>
-    <div class="prize-card"><img src="prize3.jpg"><b>🥉 المركز الثالث</b><span>اكتب اسم الجائزة هنا</span></div>
-    <div class="prize-card"><img src="prize4.jpg"><b>⭐ أفضل لاعب</b><span>اكتب اسم الجائزة هنا</span></div>
+<div class="container">
+  <h1>🏆 دوري الأبطال - CR7 🆚 M10</h1>
+  <p class="sub">مجموعة واحدة - 8 لاعيبة - كل واحد 3 ماتشات - يومين + خروج مغلوب</p>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('league',this)">📊 الدوري</button>
+    <button class="tab" onclick="showTab('scorers',this)">⚽ الهدافين</button>
+    <button class="tab" onclick="showTab('knockout',this)">🏆 خروج المغلوب</button>
+  </div>
+
+  <!-- الدوري -->
+  <div id="league" class="card show">
+    <h2>📊 ترتيب المجموعة</h2>
+    <table><thead><tr><th>#</th><th>اللاعب</th><th>لعب</th><th>فوز</th><th>خسارة</th><th>نقط</th></tr></thead><tbody id="standings"></tbody></table>
+    <h2 style="margin-top:18px">⚽ المواجهات</h2>
+    <div id="fixtures"></div>
+    <button class="btn" onclick="saveAll()">💾 حفظ كل حاجة</button>
+    <button class="btn2" onclick="resetAll()">مسح كل النتايج</button>
+  </div>
+
+  <!-- الهدافين -->
+  <div id="scorers" class="card">
+    <h2>⚽ أفضل هداف - اكتب جول كل لاعب</h2>
+    <p style="color:#94a3b8;font-size:13px">الجول هنا يدوي، عشان تقدر تحسب مين هداف الدوري.</p>
+    <div id="scorerList"></div>
+  </div>
+
+  <!-- خروج المغلوب -->
+  <div id="knockout" class="card">
+    <h2>🏆 خروج المغلوب - أول 4 بيصعدوا</h2>
+    <p style="color:#94a3b8;font-size:13px">نصف النهائي: الأول × الرابع - التاني × التالت. الفايز يروح النهائي.</p>
+    <div id="koMatches"></div>
+    <div id="champion" class="champion"></div>
   </div>
 </div>
+
 <script>
-let players = ["عمر يسري","يوسف صبري","عمر احمد تاج","محمد رمضان","لاعب جديد 1","لاعب جديد 2"];
-function shuffle(arr){ let a=[...arr]; for(let i=a.length-1;i>0;i--){ let j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function distribute(){ let s=shuffle(players); let h=Math.ceil(s.length/2); document.getElementById("groupA").innerHTML=s.slice(0,h).map(p=>`<div>${p}</div>`).join(""); document.getElementById("groupB").innerHTML=s.slice(h).map(p=>`<div>${p}</div>`).join(""); }
-distribute();
+const players = ["محمد رمضان","محمد فتحي","كريم","عمر","عمر احمد تاج","عمر يسري","مصطفي","ماهر"];
+// صورتين: كريستيانو و ميسي - تقدر تغيرهم من الزرار اللي جنب الاسم
+const IMGS = {
+  cr: "https://upload.wikimedia.org/wikipedia/commons/8/8c/Cristiano_Ronaldo_2023.jpg",
+  messi: "https://upload.wikimedia.org/wikipedia/commons/b/b4/Lionel-Messi-Argentina-2022-FIFA-World-Cup_%28cropped%29.jpg"
+};
+let avatars = JSON.parse(localStorage.getItem('avatars')||'{}');
+players.forEach((p,i)=>{ if(!avatars[p]) avatars[p] = i%2===0 ? 'cr' : 'messi'; });
+
+const matches = [
+  {day:1, a:"محمد رمضان", b:"مصطفي"},
+  {day:1, a:"محمد فتحي", b:"ماهر"},
+  {day:1, a:"محمد رمضان", b:"ماهر"},
+  {day:1, a:"محمد فتحي", b:"عمر احمد تاج"},
+  {day:1, a:"عمر احمد تاج", b:"مصطفي"},
+  {day:1, a:"كريم", b:"عمر"},
+  {day:2, a:"كريم", b:"عمر يسري"},
+  {day:2, a:"عمر", b:"محمد رمضان"},
+  {day:2, a:"عمر يسري", b:"محمد فتحي"},
+  {day:2, a:"كريم", b:"ماهر"},
+  {day:2, a:"عمر", b:"مصطفي"},
+  {day:2, a:"عمر يسري", b:"عمر احمد تاج"},
+];
+let results = JSON.parse(localStorage.getItem('results')||'{}');
+let goals = JSON.parse(localStorage.getItem('goals')||'{}');
+let ko = JSON.parse(localStorage.getItem('ko')||'{}'); // {s1a,s1b,s2a,s2b,fa,fb}
+
+function showTab(id,btn){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('show'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById(id).classList.add('show'); btn.classList.add('active');
+  if(id==='knockout') renderKO();
+}
+function imgOf(p){ return IMGS[avatars[p]]; }
+function toggleAvatar(p){
+  avatars[p] = avatars[p]==='cr' ? 'messi' : 'cr';
+  localStorage.setItem('avatars', JSON.stringify(avatars));
+  renderFixtures(); renderStandings(); renderScorers();
+}
+function getStats(){
+  let s={}; players.forEach(p=>s[p]={p:0,w:0,l:0,pts:0});
+  matches.forEach((m,i)=>{
+    let a=document.getElementById('a'+i)?.value;
+    let b=document.getElementById('b'+i)?.value;
+    if(a===''||b===''||a==null||b==null) return;
+    a=parseInt(a); b=parseInt(b);
+    s[m.a].p++; s[m.b].p++;
+    if(a>b){ s[m.a].w++; s[m.a].pts+=3; s[m.b].l++; }
+    else if(b>a){ s[m.b].w++; s[m.b].pts+=3; s[m.a].l++; }
+    else { s[m.a].pts+=1; s[m.b].pts+=1; }
+  });
+  return s;
+}
+function getSorted(){
+  let s=getStats();
+  return players.map(p=>({name:p,...s[p]})).sort((x,y)=> y.pts - x.pts || y.w - x.w);
+}
+function renderStandings(){
+  let arr=getSorted();
+  document.getElementById('standings').innerHTML = arr.map((r,idx)=>`<tr><td>${idx+1}</td><td><div class="player-cell"><img class="avatar" src="${imgOf(r.name)}"><span>${r.name}</span><button class="avatar-btn" onclick="toggleAvatar('${r.name}')">${avatars[r.name]==='cr'?'CR7':'M10'} 🔄</button>${idx<4?'<span class="badge">صعد ✅</span>':''}</div></td><td>${r.p}</td><td>${r.w}</td><td>${r.l}</td><td><b>${r.pts}</b></td></tr>`).join('');
+}
+function renderFixtures(){
+  let html=''; let last=0;
+  matches.forEach((m,i)=>{
+    if(m.day!==last){ html+=`<div class="day-title">اليوم ${m.day===1?'الأول':'التاني'}</div>`; last=m.day; }
+    html+=`<div class="match"><div class="team"><img src="${imgOf(m.a)}">${m.a}</div><div class="scores"><input type="number" id="a${i}" value="${results[i]?.a??''}" oninput="onScore()"> <span>VS</span> <input type="number" id="b${i}" value="${results[i]?.b??''}" oninput="onScore()"></div><div class="team"><img src="${imgOf(m.b)}">${m.b}</div></div>`;
+  });
+  document.getElementById('fixtures').innerHTML=html;
+}
+function onScore(){ renderStandings(); }
+function renderScorers(){
+  let arr = players.map(p=>({name:p,g: goals[p]||0})).sort((a,b)=>b.g-a.g);
+  document.getElementById('scorerList').innerHTML = arr.map((r,idx)=>`<div class="scorer-row"><span style="font-weight:bold;width:22px">${idx+1}</span><img src="${imgOf(r.name)}"><span style="flex:1;font-weight:bold">${r.name} ${idx===0&&r.g>0?'<span class="gold">👑 الهداف</span>':''}</span><span>⚽</span><input class="small" type="number" min="0" value="${r.g}" oninput="goals['${r.name}']=parseInt(this.value||0); saveAll(true); renderScorers();"></div>`).join('');
+}
+function renderKO(){
+  let top = getSorted().slice(0,4);
+  // لو لسه مفيش نتايج، هنعرض اسماء افتراضية
+  let s1a = top[0]?.name || 'الأول';
+  let s1b = top[3]?.name || 'الرابع';
+  let s2a = top[1]?.name || 'التاني';
+  let s2b = top[2]?.name || 'التالت';
+  // الفايز من نصف النهائي
+  let w1 = '', w2='';
+  if(ko.s1a!==undefined && ko.s1b!==undefined){ w1 = ko.s1a>ko.s1b ? s1a : ko.s1b>ko.s1a ? s1b : 'تعادل'; }
+  if(ko.s2a!==undefined && ko.s2b!==undefined){ w2 = ko.s2a>ko.s2b ? s2a : ko.s2b>ko.s2a ? s2b : 'تعادل'; }
+  let html = `
+  <div class="ko-box"><b>نصف نهائي 1</b><br><br>
+    <div class="team"><img src="${imgOf(s1a)}">${s1a} <input type="number" id="s1a" value="${ko.s1a??''}" oninput="saveKO()"> VS <input type="number" id="s1b" value="${ko.s1b??''}" oninput="saveKO()"> <img src="${imgOf(s1b)}">${s1b}</div>
+    <div style="margin-top:8px;color:#22c55e;font-weight:bold">الفايز: ${w1||'—'}</div></div>
+  <div class="ko-box"><b>نصف نهائي 2</b><br><br>
+    <div class="team"><img src="${imgOf(s2a)}">${s2a} <input type="number" id="s2a" value="${ko.s2a??''}" oninput="saveKO()"> VS <input type="number" id="s2b" value="${ko.s2b??''}" oninput="saveKO()"> <img src="${imgOf(s2b)}">${s2b}</div>
+    <div style="margin-top:8px;color:#22c55e;font-weight:bold">الفايز: ${w2||'—'}</div></div>
+  <div class="ko-box" style="border-style:solid"><b>🏆 النهائي</b><br><br>
+    <div class="team">${w1||'فايز 1'} <input type="number" id="fa" value="${ko.fa??''}" oninput="saveKO()"> VS <input type="number" id="fb" value="${ko.fb??''}" oninput="saveKO()"> ${w2||'فايز 2'}</div></div>`;
+  document.getElementById('koMatches').innerHTML=html;
+  let champEl=document.getElementById('champion');
+  if(w1 && w2 && w1!=='تعادل' && w2!=='تعادل' && ko.fa!==undefined && ko.fb!==undefined && ko.fa!=='' && ko.fb!==''){
+    let champ = ko.fa>ko.fb ? w1 : ko.fb>ko.fa ? w2 : '';
+    if(champ){ champEl.style.display='block'; champEl.innerHTML=`🏆 البطل: ${champ} 🎉`; } else champEl.style.display='none';
+  } else champEl.style.display='none';
+}
+function saveKO(){
+  ko={ s1a:document.getElementById('s1a').value, s1b:document.getElementById('s1b').value, s2a:document.getElementById('s2a').value, s2b:document.getElementById('s2b').value, fa:document.getElementById('fa').value, fb:document.getElementById('fb').value };
+  localStorage.setItem('ko', JSON.stringify(ko)); renderKO();
+}
+function saveAll(silent){
+  matches.forEach((m,i)=>{ let a=document.getElementById('a'+i)?.value; let b=document.getElementById('b'+i)?.value; if(a!==''&&b!=='') results[i]={a,b}; });
+  localStorage.setItem('results', JSON.stringify(results));
+  localStorage.setItem('goals', JSON.stringify(goals));
+  localStorage.setItem('avatars', JSON.stringify(avatars));
+  if(!silent) alert('اتحفظ ✅');
+}
+function resetAll(){
+  if(!confirm('تمسح كل حاجة؟')) return;
+  results={}; goals={}; ko={}; localStorage.clear(); location.reload();
+}
+renderFixtures(); renderStandings(); renderScorers();
 </script>
 </body>
 </html>
