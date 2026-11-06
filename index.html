@@ -91,7 +91,10 @@ const matches = [
   {day:2, a:"عمر", b:"مصطفي"},
   {day:2, a:"عمر يسري", b:"عمر احمد تاج"},
 ];
-let results = JSON.parse(localStorage.getItem('results')||'{}');
+// النتايج المسجلة
+let DEFAULT_RESULTS = { "0": {a:"3", b:"0"} };
+let savedResults = JSON.parse(localStorage.getItem('results')||'{}');
+let results = {...DEFAULT_RESULTS, ...savedResults};
 let goals = JSON.parse(localStorage.getItem('goals')||'{}');
 let ko = JSON.parse(localStorage.getItem('ko')||'{}');
 function showTab(id,btn){
