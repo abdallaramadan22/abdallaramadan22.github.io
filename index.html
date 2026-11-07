@@ -191,4 +191,127 @@ function resetAll(){
 renderFixtures(); renderStandings(); renderScorers();
 </script>
 </body>
+</html><!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>دوري الأبطال - التصنيف الأوتوماتيك</title>
+<style>
+*{box-sizing:border-box;font-family:'Segoe UI',Tahoma,sans-serif}
+body{background:#0a1128;color:#fff;margin:0;padding:15px}
+h1{text-align:center;color:#FFD700;margin:5px 0}
+.subtitle{text-align:center;color:#aaa;font-size:13px;margin-bottom:15px}
+.card{background:#131f45;border:1px solid #FFD70033;border-radius:15px;padding:15px;margin-bottom:15px}
+table{width:100%;border-collapse:collapse;text-align:center;font-size:14px}
+th{background:#FFD700;color:#000;padding:10px}
+td{padding:10px;border-bottom:1px solid #ffffff22}
+tr:first-child td{background:#FFD70022;color:#FFD700;font-weight:bold}
+input,select,button{padding:10px;border-radius:10px;border:none;font-size:14px}
+input,select{background:#0a1128;color:#fff;border:1px solid #ffffff33;width:100%}
+button{background:#FFD700;color:#000;font-weight:bold;cursor:pointer;width:100%;margin-top:8px}
+.flex{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+@media(max-width:600px){.flex{grid-template-columns:1fr 1fr}}
+.badge{background:#FFD700;color:#000;padding:2px 8px;border-radius:20px;font-size:12px}
+.delete{background:#ff4444;color:#fff;padding:5px 10px;border-radius:8px;cursor:pointer}
+</style>
+</head>
+<body>
+
+<h1>🏆 دوري الأبطال</h1>
+<div class="subtitle">التصنيف - RANKING | أوتوماتيك 100%</div>
+
+<!-- جدول التصنيف -->
+<div class="card">
+<h3 style="margin:0 0 10px">📊 جدول التصنيف - أوتوماتيك</h3>
+<table>
+<thead><tr><th>الترتيب</th><th>اللاعب</th><th>التصنيف</th><th>النقاط</th><th>فوز</th><th>تعادل</th><th>خسارة</th><th>فرق أهداف</th></tr></thead>
+<tbody id="ranking"></tbody>
+</table>
+<p style="font-size:12px;color:#aaa">القوانين: فوز = 10 نقط • تعادل = 5 نقط • أعلى نتيجة = +1 نقطة زيادة • التصنيف = الترتيب الأوتوماتيك</p>
+</div>
+
+<!-- إضافة ماتش -->
+<div class="card">
+<h3 style="margin:0 0 10px">➕ أضف نتيجة مباراة</h3>
+<div class="flex">
+<select id="day"><option>اليوم الأول</option><option>اليوم الثاني</option><option>اليوم الثالث</option></select>
+<select id="p1"></select>
+<input type="number" id="g1" placeholder="أهداف اللاعب 1" min="0">
+<select id="p2"></select>
+</div>
+<div class="flex" style="margin-top:8px;grid-template-columns:1fr">
+<input type="number" id="g2" placeholder="أهداف اللاعب 2" min="0">
+<button onclick="addMatch()">إضافة النتيجة ✅ والتصنيف هيتحدث لوحده</button>
+</div>
+</div>
+
+<!-- نتايج المباريات -->
+<div class="card">
+<h3>📅 نتايج المباريات</h3>
+<div id="matches"></div>
+</div>
+
+<script>
+const players = ["محمد رمضان","كريم","محمد فتحي","عمر احمد تاج","يوسف صبري","ماهر","عمر","مصطفي"];
+let matches = JSON.parse(localStorage.getItem("matches") || "[]");
+
+const p1 = document.getElementById("p1"), p2 = document.getElementById("p2");
+players.forEach(p=>{ p1.innerHTML+=<option>${p}</option>; p2.innerHTML+=<option>${p}</option>; });
+p2.selectedIndex = 1;
+
+function addMatch(){
+  const day = document.getElementById("day").value;
+  const a = p1.value, b = p2.value;
+  const ga = parseInt(document.getElementById("g1").value);
+  const gb = parseInt(document.getElementById("g2").value);
+  if(a===b || isNaN(ga) || isNaN(gb)) return alert("اختار لاعبين مختلفين واكتب النتيجة");
+  matches.push({day,a,b,ga,gb});
+  localStorage.setItem("matches", JSON.stringify(matches));
+  document.getElementById("g1").value=""; document.getElementById("g2").value="";
+  render();
+}
+
+function calc(){
+  let stats = {};
+  players.forEach(p=> stats[p]={pts:0,w:0,d:0,l:0,gf:0,ga:0});
+  matches.forEach(m=>{
+    stats[m.a].gf+=m.ga; stats[m.a].ga+=m.gb;
+    stats[m.b].gf+=m.gb; stats[m.b].ga+=m.ga;
+    if(m.ga>m.gb){ stats[m.a].pts+=10; stats[m.a].w++; stats[m.b].l++; }
+    else if(m.gb>m.ga){ stats[m.b].pts+=10; stats[m.b].w++; stats[m.a].l++; }
+    else { stats[m.a].pts+=5; stats[m.b].pts+=5; stats[m.a].d++; stats[m.b].d++; }
+  });
+  // أعلى نتيجة = أكبر فرق أهداف في ماتش واحد
+  let maxDiff = 0, bonusWinner = null;
+  matches.forEach(m=>{
+    let diff = Math.abs(m.ga - m.gb);
+    if(diff>maxDiff && diff>0){ maxDiff=diff; bonusWinner = m.ga>m.gb ? m.a : m.b; }
+  });
+  if(bonusWinner) stats[bonusWinner].pts+=1;
+  let arr = players.map(p=>({name:p, ...stats[p], gd: stats[p].gf - stats[p].ga, bonus: p===bonusWinner}));
+  arr.sort((x,y)=> y.pts - x.pts || y.gd - x.gd || y.gf - x.gf);
+  return {arr, bonusWinner, maxDiff};
+}
+
+function render(){
+  const {arr, bonusWinner, maxDiff} = calc();
+  document.getElementById("ranking").innerHTML = arr.map((p,i)=>`
+    <tr><td>${i+1}</td><td>${p.name} ${p.bonus?'<span class="badge">🔥 أعلى نتيجة +1</span>':''}</td><td>تصنيف ${i+1}</td><td><b>${p.pts} نقطة</b></td><td>${p.w}</td><td>${p.d}</td><td>${p.l}</td><td>${p.gd>0?'+':''}${p.gd}</td></tr>
+  `).join("");
+
+  // عرض الماتشات متقسمة يوم أول / تاني
+  let html = "";
+  ["اليوم الأول","اليوم الثاني","اليوم الثالث"].forEach(day=>{
+    let list = matches.map((m,idx)=>({...m,idx})).filter(m=>m.day===day);
+    if(list.length){
+      html+=<h4>${day}</h4><table><tr><th>المباراة</th><th>النتيجة</th><th></th></tr>${list.map(m=><tr><td>${m.a} ضد ${m.b}</td><td><b>${m.ga} - ${m.gb}</b></td><td><span class="delete" onclick="del(${m.idx})">حذف</span></td></tr>).join("")}</table>;
+    }
+  });
+  document.getElementById("matches").innerHTML = html || "<p style='color:#aaa'>لسه مفيش ماتشات، ضيف أول نتيجة فوق</p>";
+}
+function del(i){ matches.splice(i,1); localStorage.setItem("matches",JSON.stringify(matches)); render(); }
+render();
+</script>
+</body>
 </html>
